@@ -6,7 +6,9 @@
 #IOCs
 #https://pastebin.com/KdtLzhQF
 #https://bazaar.abuse.ch/sample/20ab498b278b14f3786f634778a04d219c74e9fd8517b98f4aca313c9934b7f2/#intel
+#https://medium.com/@shigeyuki.form/intelligence-feed-based-on-multiple-recorded-future-reports-january-26-2024-860b7c0431f3
 
+#final lump rule:
 type.inbound
 and any(body.links, any(beta.linkanalysis(.).files_downloaded,
 
@@ -19,14 +21,30 @@ and any(attachments, .file_extension in~ ("zip","rar"))
 
 #Next:
 #A link that downloads a rar:
+type.inbound
+and any(body.links, any(beta.linkanalysis(.).files_downloaded, .file_extension in~ ("zip","rar"))
+
 
 #Almost there: 
 #A RAR or Zip attachment containing an exe
+type.inbound
+and any(attachments,
+    .file_extension in~ ("zip","rar") and any(file.explode(.), .file_extension == "exe"))
 
 #A link that downloads a RAR that contains an exe
-
+type.inbound
+and any(body.links,
+    any(beta.linkanalysis(.).files_downloaded, .file_extension in~ ("zip","rar"), file.explode(), (any(.file_exgtension == "exe))
 
 #YARA matching Remote Utilities
 
 #Is there a list of shas from CertUtil for IP/SHA searching?
 
+#ccleaner download that isn't the legit ccleaner download (probably preferably to just... never download
+#example: hXXps://bitbucket[.]org/ccleaners/ccleaner/downloads/ccleaner.zip // legit: ccleaner[.]com
+type.inbound
+and any(body.links, 
+
+
+Why did my sample submission not hit on https://github.com/sublime-security/sublime-rules/blob/ecd497dc0f9c69d5d145d7bbb3e756983aa729c6/detection-rules/attachment_archive_with_exe.yml#L23
+  
