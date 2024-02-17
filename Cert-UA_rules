@@ -1,0 +1,13 @@
+# Reference: https://cert.gov.ua/article/6277285
+# Summary: Base chain is email -> RAR attachment | link (bitbucket) to RAR download -> RemoteUtilities
+
+type.inbound
+and any(body.links, any(beta.linkanalysis(.).files_downloaded,
+
+
+#Base level:
+
+#Any inbound email that has a RAR attachments
+type.inbound
+and any(attachments, .file_extension in~ ".rar")
+
