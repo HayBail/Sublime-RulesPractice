@@ -1,0 +1,13 @@
+#Virustotal sample finding:
+entity:file tag:rar,eml
+
+#OSINT sources:
+riskIQ
+Censys
+Shodan
+DomainTools
+Git
+Twitter
+SocialGroups
+MalwareBazaar
+
