@@ -1,0 +1,22 @@
+name: 
+description: |
+  
+references:
+  - ""
+type: "rule"
+severity: "low|medium|high"
+source: |
+  type.inbound
+  and any(
+  )
+attack_types:
+  - ""
+tactics_and_techniques:
+  - ""
+detection_methods:
+  - ""
+  - ""
+  - ""
+id: ""
+
+#Created a template.yml for ease of use with the more repetitive aspects of rule creation.
