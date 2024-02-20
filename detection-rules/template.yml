@@ -19,4 +19,4 @@ detection_methods:
   - ""
 id: ""
 
-#Created a template.yml for ease of use with the more repetitive aspects of rule creation.
+#Created from template.yml for ease of use with the more repetitive aspects of rule creation.
