@@ -34,7 +34,7 @@ and any(attachments,
 #A link that downloads a RAR that contains an exe
 type.inbound
 and any(body.links,
-    any(beta.linkanalysis(.).files_downloaded, .file_extension in~ ("zip","rar"), file.explode(), (any(.file_exgtension == "exe))
+    any(beta.linkanalysis(.).files_downloaded, .file_extension in~ ("zip","rar"), file.explode(), (any(.file_extension == "exe))
 
 #YARA matching Remote Utilities
 
