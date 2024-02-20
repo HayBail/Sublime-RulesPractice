@@ -1,0 +1,30 @@
+name: "Link: Downloads ZIP or RAR archive"
+description: |
+  Link analysis to determine if a link in body text downlaods a zip or rar archive.
+
+  According to Cert-UA on January 22, 2024, a threat actor tracked under the identifier 
+  UAC-0050 delivered RURAT, also known as RemoteUtilities, while purporting to be the 
+  State Special Communications Service of Ukraine. The malicious executables were delivered 
+  via a ZIP or RAR archive attachment or a hyperlink located in the email body that downloaded
+  a ZIP or RAR archive from bitbucket.
+  
+references:
+  - "https://cert.gov.ua/article/6277285"
+type: "rule"
+severity: "high"
+source: |
+  type.inbound
+and any(body.links, 
+        any(beta.linkanalysis(.).files_downloaded, 
+        .file_extension in~ ("zip","rar"))
+attack_types:
+  - ""
+tactics_and_techniques:
+  - ""
+detection_methods:
+  - ""
+  - ""
+  - ""
+id: ""
+
+#Created a template.yml for ease of use with the more repetitive aspects of rule creation.
