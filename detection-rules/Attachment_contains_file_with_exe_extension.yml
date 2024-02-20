@@ -1,0 +1,31 @@
+name: "Attachment: Contained file with file extension .exe"
+description: |
+  Recursively scan archives for the hardcoded presence of an executable ".exe" file extension. 
+
+  According to Cert-UA on January 22, 2024, a threat actor tracked under the identifier 
+  UAC-0050 delivered RURAT, also known as RemoteUtilities, while purporting to be the 
+  State Special Communications Service of Ukraine. The malicious executables were delivered 
+  via a ZIP or RAR archive attachment or a hyperlink located in the email body that downloaded
+  a ZIP or RAR archive from bitbucket.
+  
+references:
+  - "https://cert.gov.ua/article/6277285"
+type: "rule"
+severity: "high"
+source: |
+  type.inbound
+  and any(attachments,
+          .file_extension in~ ("zip","rar") 
+           and any(file.explode(.), 
+                   .file_extension == "exe")
+  )
+attack_types:
+  - "Malware/Ransomware"
+tactics_and_techniques:
+  - "Delivery"
+detection_methods:
+  - "Archive analysis"
+  - "File analysis"
+id: ""
+
+#Created from template.yml for ease of use with the more repetitive aspects of rule creation.
