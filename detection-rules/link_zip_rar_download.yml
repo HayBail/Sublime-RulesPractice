@@ -14,7 +14,7 @@ type: "rule"
 severity: "high"
 source: |
   type.inbound
-and any(body.links, 
+  and any(body.links, 
         any(beta.linkanalysis(.).files_downloaded, 
         .file_extension in~ ("zip","rar"))
 attack_types:
