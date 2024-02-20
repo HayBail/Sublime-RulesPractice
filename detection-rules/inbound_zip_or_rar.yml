@@ -1,0 +1,17 @@
+name: "Attachment: Zip or RAR Archive"
+description: |
+  An informational low severity rule tagging on any inbound zip or RAR archive.
+references:
+  - "https://cert.gov.ua/article/6277285"
+type: "rule"
+severity: "low"
+source: |
+  type.inbound
+  and any(attachments, 
+          .file_extension in~ ("zip","rar")
+  )
+attack_types:
+tactics_and_techniques:
+  - "Delivery"
+detection_methods:
+id: ""
