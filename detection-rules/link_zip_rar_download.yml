@@ -18,13 +18,11 @@ source: |
         any(beta.linkanalysis(.).files_downloaded, 
         .file_extension in~ ("zip","rar"))
 attack_types:
-  - ""
+  - "Malware/Ransomware"
 tactics_and_techniques:
-  - ""
+  - "Evasion"
 detection_methods:
-  - ""
-  - ""
-  - ""
+  - "File Analysis"
 id: ""
 
 #Created a template.yml for ease of use with the more repetitive aspects of rule creation.
