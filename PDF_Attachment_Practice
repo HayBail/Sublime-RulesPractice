@@ -1,5 +1,6 @@
 #https://www.infosecurity-magazine.com/news/russian-hackers-email-ukrainians/
 #https://www.welivesecurity.com/en/eset-research/operation-texonto-information-operation-targeting-ukrainian-speakers-context-war/
+https://urlscan.io/result/7982f734-e9e3-46ef-8d6c-4a78b6f16eb0/#transactions
 
 Operation Texonto
 The attack chain:
@@ -14,5 +15,6 @@ Rule based on email content:
 #Malicious link with a lot of unique variables
 
 #malicious/young domain containing "microsoft" 
+https://urlscan.io/result/7982f734-e9e3-46ef-8d6c-4a78b6f16eb0/#transactions
 
 #IT department language with link leading credential requiring page
