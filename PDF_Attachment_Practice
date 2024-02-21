@@ -1,0 +1,18 @@
+#https://www.infosecurity-magazine.com/news/russian-hackers-email-ukrainians/
+#https://www.welivesecurity.com/en/eset-research/operation-texonto-information-operation-targeting-ukrainian-speakers-context-war/
+
+Operation Texonto
+The attack chain:
+Spam email with disinformation
+phishing email purporting to be it at a known company containing a link to a bespoke and unique credential harvesting domain. Vibes a lot like Callisto.
+
+Rule based on email content:
+#Spam
+
+#Fake IT
+
+#Malicious link with a lot of unique variables
+
+#malicious/young domain containing "microsoft" 
+
+#IT department language with link leading credential requiring page
