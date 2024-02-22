@@ -8,9 +8,48 @@ Spam email with disinformation
 phishing email purporting to be it at a known company containing a link to a bespoke and unique credential harvesting domain. Vibes a lot like Callisto.
 
 Rule based on email content:
-#Spam
+
+#CredTheft nlu -- is ukrainian language supported by the nlu? #It's not -- give up.
+type.inbound
+and any([body.plain.raw, body.html.inner_text], 
+        any(ml.nlu_classifier(.).intents,
+            .name == "cred_theft" and .confidence == "medium"
+        )
+)
 
 #Fake IT
+type.inbound
+//Shady new domain from an email purporting to be IT...
+and strings.istarts_with(sender.email.email == "it.")
+and sender.email.domain.domain in $free_email_providers
+
+//...but it sure as heck isn't and IT department WE know.
+//New domain who dis
+and any(body.links,
+
+    .href_url.domain.root_domain not in $tranco_1m
+    or (
+        // free subdomain URL
+        .href_url.domain.subdomain is not null
+        and .href_url.domain.subdomain != "www"
+        and .href_url.domain.root_domain in $free_subdomain_hosts
+    )
+)
+//Negate trusted senders
+and (
+    (
+      sender.email.domain.root_domain in $high_trust_sender_root_domains
+      and (
+        any(distinct(headers.hops, .authentication_results.dmarc is not null),
+            strings.ilike(.authentication_results.dmarc, "*fail")
+        )
+      )
+    )
+    or sender.email.domain.root_domain not in $high_trust_sender_root_domains
+  )
+  
+  
+  https://analyzer.sublimesecurity.com?id=342ce376-e91f-4660-9d0e-d8e995c80501
 
 #Malicious link with a lot of unique variables
 
