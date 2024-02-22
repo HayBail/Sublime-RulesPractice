@@ -1,0 +1,48 @@
+name: "Sender: Freemail Sender Purporting to be IT"
+description: |
+  
+references:
+  - ""
+type: "rule"
+severity: "low|medium|high"
+source: |
+  type.inbound
+  and any(
+  )
+attack_types:
+  - ""
+tactics_and_techniques:
+  - ""
+detection_methods:
+  - ""
+  - ""
+  - ""
+id: ""
+
+#Created from template.yml for ease of use with the more repetitive aspects of rule creation.
+
+   Type:
+       rule
+       query
+
+    Attack Types:
+        Malware/Ransomware
+        Credential Phishing
+
+    Tactics and Techniques:
+        Evasion
+        HTML smuggling
+        Scripting
+        Social engineering
+        Encryption
+
+    Detection Methods:
+        Archive analysis
+        File analysis
+        HTML analysis
+        YARA
+        Javascript analysis
+        Natural Language Understanding
+        OLE analysis
+        URL analysis
+        Sender analysis
