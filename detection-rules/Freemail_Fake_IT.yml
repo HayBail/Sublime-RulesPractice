@@ -1,48 +1,53 @@
 name: "Sender: Freemail Sender Purporting to be IT"
 description: |
+  Analyze the sender email address to assess that the all of the following are true: 
+   - the starting three characters are "it." 
+   - the sender domain is on the free email provider list.
+   - the body links are not using any of the top 1 million sites
+   - the sender is not a trusted sender
+
+  According to ESET Research on February 21, 2024, malicious activity tracked under the identifier 
+  Operation Texonto "targeted a Ukraininan defense company in October 2023 and an EU Agency in November 2023" for
+  the purpose of Microsoft Office 365 credential harvesting. The October 2023 emails purported to be from the IT department 
+  of the company and sent Ukrainian language emails containing a link to a fake microsoft domain. 
   
 references:
-  - ""
-type: "rule"
-severity: "low|medium|high"
+  - "https://www.welivesecurity.com/en/eset-research/operation-texonto-information-operation-targeting-ukrainian-speakers-context-war/"
+severity: "high"
 source: |
   type.inbound
-  and any(
+  //new domain from an email purporting to be IT.
+  and strings.istarts_with(sender.email.email == "it.")
+  and sender.email.domain.domain in $free_email_providers
+  
+  //Not a top domain
+  and any(body.links,
+    .href_url.domain.root_domain not in $tranco_1m
+    or (
+        // free subdomain URL
+        .href_url.domain.subdomain is not null
+        and .href_url.domain.subdomain != "www"
+        and .href_url.domain.root_domain in $free_subdomain_hosts
+    )
+ )
+ //Negate trusted senders
+ and (
+     (
+      sender.email.domain.root_domain in $high_trust_sender_root_domains
+      and (
+        any(distinct(headers.hops, .authentication_results.dmarc is not null),
+            strings.ilike(.authentication_results.dmarc, "*fail")
+        )
+      )
+    )
+    or sender.email.domain.root_domain not in $high_trust_sender_root_domains
   )
 attack_types:
-  - ""
+  - "Credential phishing"
 tactics_and_techniques:
-  - ""
+  - "Social engineering"
 detection_methods:
-  - ""
-  - ""
-  - ""
+  - "Sender Analysis"
 id: ""
 
 #Created from template.yml for ease of use with the more repetitive aspects of rule creation.
-
-   Type:
-       rule
-       query
-
-    Attack Types:
-        Malware/Ransomware
-        Credential Phishing
-
-    Tactics and Techniques:
-        Evasion
-        HTML smuggling
-        Scripting
-        Social engineering
-        Encryption
-
-    Detection Methods:
-        Archive analysis
-        File analysis
-        HTML analysis
-        YARA
-        Javascript analysis
-        Natural Language Understanding
-        OLE analysis
-        URL analysis
-        Sender analysis
