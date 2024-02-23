@@ -52,8 +52,30 @@ and (
   https://analyzer.sublimesecurity.com?id=342ce376-e91f-4660-9d0e-d8e995c80501
 
 #Malicious link with a lot of unique variables
+doesn't match in analyzer, may be an issue with the encoding in the texonto blog or the semicolons 
+type.inbound
+and any(body.links, 
+    strings.icontains(.href_url.url,"client_id=")
+    and strings.icontains(.href_url.url,"redirect_uri=")
+    and strings.icontains(.href_url.url, "resource=")
+    and strings.icontains(.href_url.url, "client-request-id=")
+    and strings.icontains(.href_url.url, "domain_hint=")
+    and strings.icontains(.href_url.url, "nonce=")
+    and strings.icontains(.href_url.url, "state=")
+    #this behavior is normal for microsoftonline.com, but threat actors mimic it.
+    and not strings.icontains(.href_url.domain.root_domain, "microsoftonline.com")
+)
+A legit example from google: https://login.microsoftonline.com/common/oauth2/authorize?client_id=00000002-0000-0ff1-ce00-000000000000&redirect_uri=https%3a%2f%2foutlook.office365.com%2fowa%2f&resource=00000002-0000-0ff1-ce00-000000000000&response_mode=form_post&response_type=code+id_token&scope=openid&msafed=0&client-request-id=653985fe-0a3d-41d8-b61e-488be444b4be&protectedtoken=true&domain_hint=pgcc.edu&nonce=636409796260277841.255ad45d-6084-4e52-bee9-dbe126a3d56d&state=DcsxDoMwDEDRBK7B3C0QjO2QAXEWgy1UCURVCbg-Gd7fvnfO1UVV-FjiEg-MMafMwBFSGrFvgUgUSQPHEQMaQVjMctDFemAZlFh9eZvufKSb_yb7Mf22dW1Nr8-t0yHf_QU
+//more deconfliction done in final yml 
 
-#malicious/young domain containing "microsoft" 
+
+#malicious rerouting domain rerouting to office365  
 https://urlscan.io/result/7982f734-e9e3-46ef-8d6c-4a78b6f16eb0/#transactions
+type.inbound
+and any(body.links,
+    strings.icontains(.href_url.url, "redirect_uri=https%3a%2f%2foutlook.office365.com")
+    and not strings.icontains(.href_url.domain.root_domain, "microsoftonline.com")
+)
 
 #IT department language with link leading credential requiring page
+///more deconfliction done in final yml
