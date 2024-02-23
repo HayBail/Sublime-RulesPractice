@@ -1,0 +1,51 @@
+name: "Link: Redirect to office365 not from microsoftonline"
+description: |
+  Analyze links found in the email body to determine if they contain a redirect to office365  from an unfamiliar domain.
+   - redirect_uri=https%3a%2f%2foutlook.office365.com%2fowa%2f&amp;
+
+  According to ESET Research on February 21, 2024, malicious activity tracked under the identifier 
+  Operation Texonto "targeted a Ukraininan defense company in October 2023 and an EU Agency in November 2023" for
+  the purpose of Microsoft Office 365 credential harvesting. The October 2023 emails purported to be from the IT department 
+  of the company and sent Ukrainian language emails containing a link to a fake microsoft domain.
+  After interaction, this link likely redirected to the legitimate office365 webpage.  
+references:
+  - "#https://www.welivesecurity.com/en/eset-research/operation-texonto-information-operation-targeting-ukrainian-speakers-context-war/"
+type: "rule"
+severity: "high"
+source: |
+  type.inbound
+  and any(body.links,
+    strings.icontains(.href_url.url, "redirect_uri=https%3a%2f%2foutlook.office365.com")
+    and not strings.icontains(.href_url.domain.root_domain, "microsoftonline.com")
+	//Double check that the order of operations is obeyed in this statement, in particular the parenthetical OR
+    and (.href_url.domain.root_domain not in $tranco_1m
+    or (
+        // free subdomain URL
+        .href_url.domain.subdomain is not null
+        and .href_url.domain.subdomain != "www"
+        and .href_url.domain.root_domain in $free_subdomain_hosts
+    ))
+)
+//Negate trusted senders
+and (
+    (
+      sender.email.domain.root_domain in $high_trust_sender_root_domains
+      and (
+        any(distinct(headers.hops, .authentication_results.dmarc is not null),
+            strings.ilike(.authentication_results.dmarc, "*fail")
+        )
+      )
+    )
+    or sender.email.domain.root_domain not in $high_trust_sender_root_domains
+  )
+attack_types:
+  - "Credential Phishing"
+tactics_and_techniques:
+  - "Social engineering"
+detection_methods:
+  - "URL analysis"
+  - "Sender analysis"
+
+id: ""
+
+#Created from template.yml for ease of use with the more repetitive aspects of rule creation.
