@@ -24,8 +24,7 @@ and any(body.links,
     and strings.icontains(.href_url.url, "state=")
     //this behavior is normal for microsoftonline.com, but threat actors mimic it.
     and not strings.icontains(.href_url.domain.root_domain, "microsoftonline.com")
-	
-	and (.href_url.domain.root_domain not in $tranco_1m
+    and (.href_url.domain.root_domain not in $tranco_1m
     or (
         // free subdomain URL
         .href_url.domain.subdomain is not null
