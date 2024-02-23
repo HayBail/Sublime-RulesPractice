@@ -1,7 +1,7 @@
 name: "Link: Redirect to office365 not from microsoftonline"
 description: |
   Analyze links found in the email body to determine if they contain a redirect to office365  from an unfamiliar domain.
-   - redirect_uri=https%3a%2f%2foutlook.office365.com%2fowa%2f&amp;
+   - redirect_uri=https%3a%2f%2foutlook[.]office365[.]com%2fowa%2f&amp;
 
   According to ESET Research on February 21, 2024, malicious activity tracked under the identifier 
   Operation Texonto "targeted a Ukraininan defense company in October 2023 and an EU Agency in November 2023" for
@@ -25,9 +25,9 @@ source: |
         and .href_url.domain.subdomain != "www"
         and .href_url.domain.root_domain in $free_subdomain_hosts
     ))
-)
-//Negate trusted senders
-and (
+ )
+ //Negate trusted senders
+ and (
     (
       sender.email.domain.root_domain in $high_trust_sender_root_domains
       and (
